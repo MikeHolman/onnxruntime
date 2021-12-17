@@ -3444,9 +3444,13 @@ Return true if all elements are true and false otherwise.
 }  // namespace training
 
 void RegisterOrtOpSchemas() {
-  ONNX_NAMESPACE::OpSchemaRegistry::DomainToVersionRange::Instance().AddDomainToVersion(onnxruntime::kMSDomain, 1, 1);
-  ONNX_NAMESPACE::OpSchemaRegistry::DomainToVersionRange::Instance().AddDomainToVersion(onnxruntime::kMSExperimentalDomain, 1, 1);
-  ONNX_NAMESPACE::OpSchemaRegistry::DomainToVersionRange::Instance().AddDomainToVersion(onnxruntime::kMSNchwcDomain, 1, 1);
+  auto& d = ONNX_NAMESPACE::OpSchemaRegistry::DomainToVersionRange::Instance();
+  if (d.Map().find(onnxruntime::kMSDomain) == d.Map().end())
+    d.AddDomainToVersion(onnxruntime::kMSDomain, 1, 1);
+  if (d.Map().find(onnxruntime::kMSExperimentalDomain) == d.Map().end())
+    d.AddDomainToVersion(onnxruntime::kMSExperimentalDomain, 1, 1);
+  if (d.Map().find(onnxruntime::kMSNchwcDomain) == d.Map().end())
+    d.AddDomainToVersion(onnxruntime::kMSNchwcDomain, 1, 1);
 
   onnxruntime::contrib::RegisterContribSchemas();
   onnxruntime::training::RegisterTrainingOpSchemas();
